@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Notes</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="A note taking application using HTML/CSS/Javascript">
+    <link rel="icon" type="image/png" href="https://yandex-images.clstorage.net/97LnSf373/cbf0b8zMH/HqRy4d5wwi8DFnPYrima4XDx1W7NwNyRPi6rFIxg83n6LXDkz-NaRxvyl8vrSiFsDSm2fj4Y2IgWqWMFoYNSKkbsYqjvadZyVlt7of4JlvV4hKBiibG0gEpHomXhQZNF3jlxQWY72t6yFx96FovBKTFwihdnaZXQetwqbZHiXnPmAXap4vQ_g1MSAuxmCZLR8LCl0mkJNGQiAm59aTBvGAdUAVXCr3JqBuMPxr6rbbFlleovRw0taPNoDgV48iY_Csy6od5QQ4c_Pl4ociWe0XCMcZoJNWygFj6KcXFQH1A7cNm58o8Wkg5nb_7O_1E5Qe2maz-B5ci7AAplDMZWM9ZIZpliKDfThyI6cKLhmrHwMOFmUdXEHMpuAqmxPMe0y0xpOX578sp-b_NikvuZSXW17kvH_YkUf8z-zQAK1oNK9EJlmphDzxO-LtxyJQLF6DB1brm9BNQKDpK93WRLbG-YEQG2u5aWEg8XGtID7eVhlVoTc_nleE_gjtmICsZ78jiiBdL0Tz-D5i5Mlh1KvWDA3er1ibzkyk7excUQ66DnyGl5lrM6PoLn-0KC422hZZEa18Np1Syj2K5BvF5GL_qYKrk6rE-TX0q6yAb5Zr0wPGFylRWw8BIi-i35yDvgo7gZIV7jxhpup7_Goo9V5fV1givPxY183_yK_WjGqm8K3EKFinSHz1dCDiRunfpJXBzpSmW9zLDOjr45ZZjLFHMsqZ3K63aaWoNLmhqb6WXxBYpnQzEd6LMAlmEIjpoHktRWacL8L8Pf4p4gmo2qpazAfebJOWxwBkr6Ue24U7SjSKmxtv8eZqbDlz6uc3Et3c2qx4uNlQy3JEJleGIGp6JwVqGW2Mv3C9a2qGKxQkFcAIV6id0AhOoa4nlpjDN090hh1QqnakqOs0OaFrNZyV35Ysf3wd18s2g6AQQOUh82uNqVivzXW---itCCBT45zExl-pHBpKRmYorFgTxY">
+    <style>
+  /* Global styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 24px 48px;
+  background-color: #f5f5f5;
+}
+
+header {
+  color: #456688;
+}
+
+/* Form styles */
+textarea {
+  display: block;
+  line-height: 1.5;
+  border-radius: 0.4rem;
+  padding: 1em;
+}
+
+textarea,
+form select {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+}
+
+form select,
+form button {
+  display: inline-block;
+  margin: 2rem 1rem 0 0;
+  height: 2rem;
+}
+
+form select {
+  text-indent: 4px;
+  width: 100px;
+}
+
+#addNoteBtn {
+  width: 7rem;
+  background-color: #456688;
+  color: #ffffff;
+  border-radius: 0.4rem;
+  border: 0;
+  transition: background-color 0.2s ease-in-out;
+  -webkit-transition: background-color 0.2s ease-in-out;
+}
+
+#addNoteBtn:hover {
+  cursor: pointer;
+  background-color: #7ba4ce;
+}
+
+/* Note Styles */
+#notes {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 2rem;
+}
+
+.note {
+  width: 24rem;
+  height: 20rem;
+  font-size: 1.4rem;
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 1.2rem 1.6rem;
+  margin: 2.4rem 2.4rem 0 0;
+  box-shadow: 0 0.9rem 1.2rem rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.note-text {
+  height: 100%;
+  overflow-y: auto;
+  margin-top: 1rem;
+}
+
+.note.red {
+  border: 3px solid lightcoral;
+}
+
+.note.blue {
+  border: 3px solid lightskyblue;
+}
+
+.note.green {
+  border: 3px solid lightgreen;
+}
+
+.note.yellow {
+  border: 3px solid gold;
+}
+
+.note .note-delete {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  top: 0.2rem;
+  right: 0.2rem;
+  border-radius: 0.4rem;
+  color: #999;
+  text-align: center;
+}
+
+.note .note-hide {
+  display: none;
+}
+
+.note span:hover {
+  color: #333;
+  background: #f5f5f5;
+  cursor: pointer;
+}
+
+    </style>
+  </head>
+  <body>
+    <header>
+      
+      <h1>Application simple de prise de notes</h1>
+      <p>Créez et supprimez des notes, avec des étiquettes de couleur facultatives</p>
+      
+    </header>
+    
+    <form method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        <label for="content">Nouvelle note :</label><br>
+        <textarea name="content" id="content" cols="80" rows="10" placeholder="Commencez à taper une note..."></textarea><br>
+        <select name="formColorPicker" id="formColorPicker">
+            <option value="none">Sélectionner une couleur</option>
+            <option value="red">Rouge</option>
+            <option value="green">Vert</option>
+            <option value="blue">Bleu</option>
+            <option value="yellow">Jaune</option>
+        </select>
+        <button type="submit" id="addNoteBtn" value="Ajouter une note">Ajouter une note</button>
+      </form>
+      <div id="notes">
+        {% for note in notes %}
+          <div class="note {{ note.color }}">
+            <div class="note-text">{{ note.content }}</div>
+            <span class="note-delete">&times;</span>
+          </div>
+        {% endfor %}
+      </div>
+      
+    
+    <script>
+        /**
+ * Initialization
+*/
+const form = {}; // form state
+form.noteText = document.querySelector('#content');
+form.noteText.innerText = '';
+form.addButton = document.querySelector('#addNoteBtn');
+form.color = document.querySelector('#formColorPicker');
+
+// Reference the container of existing notes
+const notes = document.querySelector('#notes');
+
+/**
+ * Functions
+*/
+const addNote = () => {
+  let text = form.noteText.value;
+  let note = document.createElement('div');
+  let deleteButton = document.createElement('span');
+
+  note.classList.add('note');
+  note.classList.add(form.color.value);
+  note.innerHTML = `<div class='note-text'>${text}</div>`;
+  deleteButton.classList.add('note-delete');
+  deleteButton.innerHTML = '&times;';
+
+  note.appendChild(deleteButton);  
+
+  notes.appendChild(note);
+
+  form.noteText.value = '';
+  form.noteText.focus();
+
+  addListenerDeleteButton(deleteButton);
+}
+
+const addListenerDeleteButton = deleteButton => {
+  deleteButton.addEventListener('click', e => {
+    e.stopPropagation();      
+    deleteNote(e);
+  });
+}
+
+const deleteNote = e => {
+  let eventNote = e.target.parentNode;
+  eventNote.parentNode.removeChild(eventNote);
+}
+
+
+// Handles clicking of #addNoteBtn to create a new note
+form.addButton.addEventListener('click', e => {
+  e.preventDefault();  
+  if (form.noteText.value != '') {
+    addNote();
+  }
+})
+
+    </script>
+    
+  </body>
+</html>
