@@ -53,26 +53,16 @@ form select {
   width: 100px;
 }
 
-#addNoteBtn {
-  width: 7rem;
-  background-color: #456688;
-  color: #ffffff;
-  border-radius: 0.4rem;
-  border: 0;
-  transition: background-color 0.2s ease-in-out;
-  -webkit-transition: background-color 0.2s ease-in-out;
-}
 
-#addNoteBtn:hover {
-  cursor: pointer;
-  background-color: #7ba4ce;
-}
+
+
 
 /* Note Styles */
 #notes {
   display: flex;
   flex-wrap: wrap;
   padding-top: 2rem;
+  
 }
 
 .note {
@@ -151,7 +141,7 @@ form select {
             <option value="blue">Bleu</option>
             <option value="yellow">Jaune</option>
         </select>
-        <button type="submit" id="addNoteBtn" value="Ajouter une note">Ajouter une note</button>
+        <button type="submit" value="Ajouter une note">Ajouter une note</button>
       </form>
       <div id="notes">
         {% for note in notes %}
@@ -170,7 +160,6 @@ form select {
 const form = {}; // form state
 form.noteText = document.querySelector('#content');
 form.noteText.innerText = '';
-form.addButton = document.querySelector('#addNoteBtn');
 form.color = document.querySelector('#formColorPicker');
 
 // Reference the container of existing notes
