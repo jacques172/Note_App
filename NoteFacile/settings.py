@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -175,7 +176,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -187,7 +195,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.outlook.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = '<email>'
-EMAIL_HOST_PASSWORD = '<mot de passe>'
+EMAIL_HOST_USER = 'asinyojacques@outlook.com'
+EMAIL_HOST_PASSWORD = 'Jush123@'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = '<mot de passe>'
+DEFAULT_FROM_EMAIL = 'asinyojacques@outlook.com'
