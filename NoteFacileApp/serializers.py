@@ -13,15 +13,5 @@ class UserSerializer(serializers.ModelSerializer):
             'email': {'required': True}
         }
 
-    def create(self, validated_data):
-        # Create a new User instance with the validated data
-        user = User.objects.create(
-            username=validated_data['username'],
-            email=validated_data['email']
-        )
-        # Set the password using the set_password method to properly hash it
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
 
 
