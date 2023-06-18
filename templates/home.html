@@ -157,15 +157,23 @@ form select {
         /**
          * Initialization
          */
+      
+        // Create an empty object to hold the form state
         const form = {}; // form state
+        
+        // Reference the textarea element with the id 'content'
         form.noteText = document.querySelector('#content');
+        
+        // Clear the initial value of the textarea
         form.noteText.innerText = '';
+        
+        // Reference the color picker input element with the id 'formColorPicker'
         form.color = document.querySelector('#formColorPicker');
       
-        // Reference the container of existing notes
+        // Reference the container element that will hold the existing notes
         const notes = document.querySelector('#notes');
       
-        // Load notes from local storage
+        // Load existing notes from local storage or initialize an empty array
         const savedNotes = JSON.parse(localStorage.getItem('notes')) || [];
       
         // Function to save notes to local storage
@@ -176,32 +184,44 @@ form select {
         /**
          * Functions
          */
+      
+        // Function to add a new note
         const addNote = () => {
           let text = form.noteText.value;
           let color = form.color.value;
           let note = document.createElement('div');
           let deleteButton = document.createElement('span');
       
+          // Add classes to the note element
           note.classList.add('note');
           note.classList.add(color);
+          
+          // Set the content of the note element with the entered text
           note.innerHTML = `<div class='note-text'>${text}</div>`;
+          
+          // Add classes to the delete button element
           deleteButton.classList.add('note-delete');
           deleteButton.innerHTML = '&times;';
       
+          // Append the delete button to the note element
           note.appendChild(deleteButton);
       
+          // Append the note element to the container of existing notes
           notes.appendChild(note);
       
+          // Clear the textarea and set the focus on it
           form.noteText.value = '';
           form.noteText.focus();
       
+          // Add a click event listener to the delete button
           addListenerDeleteButton(deleteButton);
       
-          // Save note to local storage
+          // Save the note to local storage by adding it to the savedNotes array
           savedNotes.push({ text, color });
           saveNotes();
         };
       
+        // Function to add a click event listener to the delete button
         const addListenerDeleteButton = (deleteButton) => {
           deleteButton.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -209,34 +229,49 @@ form select {
           });
         };
       
+        // Function to delete a note
         const deleteNote = (e) => {
+          // Get the parent note element of the clicked delete button
           let eventNote = e.target.parentNode;
+          
+          // Remove the note element from its parent container
           eventNote.parentNode.removeChild(eventNote);
       
-          // Remove note from savedNotes array and update local storage
+          // Find the index of the note in the savedNotes array based on its content
           const noteText = eventNote.querySelector('.note-text').textContent;
           const noteIndex = savedNotes.findIndex((note) => note.text === noteText);
+      
+          // If the note is found in the array, remove it and update local storage
           if (noteIndex !== -1) {
             savedNotes.splice(noteIndex, 1);
             saveNotes();
           }
         };
       
-        // Load existing notes from local storage
+        // Load existing notes from local storage and display them
         savedNotes.forEach((note) => {
           let { text, color } = note;
           let noteElement = document.createElement('div');
           let deleteButton = document.createElement('span');
       
+          // Add classes to the note element
           noteElement.classList.add('note');
           noteElement.classList.add(color);
+          
+          // Set the content of the note element with the saved text
           noteElement.innerHTML = `<div class='note-text'>${text}</div>`;
+          
+          // Add classes to the delete button element
           deleteButton.classList.add('note-delete');
           deleteButton.innerHTML = '&times;';
       
+          // Append the delete button to the note element
           noteElement.appendChild(deleteButton);
+      
+          // Append the note element to the container of existing notes
           notes.appendChild(noteElement);
       
+          // Add a click event listener to the delete button
           addListenerDeleteButton(deleteButton);
         });
       
@@ -249,6 +284,7 @@ form select {
           }
         });
       </script>
+      
       
     
   </body>
