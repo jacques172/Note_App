@@ -141,7 +141,7 @@ form select {
             <option value="blue">Bleu</option>
             <option value="yellow">Jaune</option>
         </select>
-        <button type="submit" value="Ajouter une note">Ajouter une note</button>
+        <button id="addButton" type="submit" value="Ajouter une note">Ajouter une note</button>
       </form>
       <div id="notes">
         {% for note in notes %}
@@ -153,64 +153,103 @@ form select {
       </div>
       
     
-    <script>
+      <script>
         /**
- * Initialization
-*/
-const form = {}; // form state
-form.noteText = document.querySelector('#content');
-form.noteText.innerText = '';
-form.color = document.querySelector('#formColorPicker');
-
-// Reference the container of existing notes
-const notes = document.querySelector('#notes');
-
-/**
- * Functions
-*/
-const addNote = () => {
-  let text = form.noteText.value;
-  let note = document.createElement('div');
-  let deleteButton = document.createElement('span');
-
-  note.classList.add('note');
-  note.classList.add(form.color.value);
-  note.innerHTML = `<div class='note-text'>${text}</div>`;
-  deleteButton.classList.add('note-delete');
-  deleteButton.innerHTML = '&times;';
-
-  note.appendChild(deleteButton);  
-
-  notes.appendChild(note);
-
-  form.noteText.value = '';
-  form.noteText.focus();
-
-  addListenerDeleteButton(deleteButton);
-}
-
-const addListenerDeleteButton = deleteButton => {
-  deleteButton.addEventListener('click', e => {
-    e.stopPropagation();      
-    deleteNote(e);
-  });
-}
-
-const deleteNote = e => {
-  let eventNote = e.target.parentNode;
-  eventNote.parentNode.removeChild(eventNote);
-}
-
-
-// Handles clicking of #addNoteBtn to create a new note
-form.addButton.addEventListener('click', e => {
-  e.preventDefault();  
-  if (form.noteText.value != '') {
-    addNote();
-  }
-})
-
-    </script>
+         * Initialization
+         */
+        const form = {}; // form state
+        form.noteText = document.querySelector('#content');
+        form.noteText.innerText = '';
+        form.color = document.querySelector('#formColorPicker');
+      
+        // Reference the container of existing notes
+        const notes = document.querySelector('#notes');
+      
+        // Load notes from local storage
+        const savedNotes = JSON.parse(localStorage.getItem('notes')) || [];
+      
+        // Function to save notes to local storage
+        const saveNotes = () => {
+          localStorage.setItem('notes', JSON.stringify(savedNotes));
+        };
+      
+        /**
+         * Functions
+         */
+        const addNote = () => {
+          let text = form.noteText.value;
+          let color = form.color.value;
+          let note = document.createElement('div');
+          let deleteButton = document.createElement('span');
+      
+          note.classList.add('note');
+          note.classList.add(color);
+          note.innerHTML = `<div class='note-text'>${text}</div>`;
+          deleteButton.classList.add('note-delete');
+          deleteButton.innerHTML = '&times;';
+      
+          note.appendChild(deleteButton);
+      
+          notes.appendChild(note);
+      
+          form.noteText.value = '';
+          form.noteText.focus();
+      
+          addListenerDeleteButton(deleteButton);
+      
+          // Save note to local storage
+          savedNotes.push({ text, color });
+          saveNotes();
+        };
+      
+        const addListenerDeleteButton = (deleteButton) => {
+          deleteButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteNote(e);
+          });
+        };
+      
+        const deleteNote = (e) => {
+          let eventNote = e.target.parentNode;
+          eventNote.parentNode.removeChild(eventNote);
+      
+          // Remove note from savedNotes array and update local storage
+          const noteText = eventNote.querySelector('.note-text').textContent;
+          const noteIndex = savedNotes.findIndex((note) => note.text === noteText);
+          if (noteIndex !== -1) {
+            savedNotes.splice(noteIndex, 1);
+            saveNotes();
+          }
+        };
+      
+        // Load existing notes from local storage
+        savedNotes.forEach((note) => {
+          let { text, color } = note;
+          let noteElement = document.createElement('div');
+          let deleteButton = document.createElement('span');
+      
+          noteElement.classList.add('note');
+          noteElement.classList.add(color);
+          noteElement.innerHTML = `<div class='note-text'>${text}</div>`;
+          deleteButton.classList.add('note-delete');
+          deleteButton.innerHTML = '&times;';
+      
+          noteElement.appendChild(deleteButton);
+          notes.appendChild(noteElement);
+      
+          addListenerDeleteButton(deleteButton);
+        });
+      
+        // Get the add button element and add a click event listener
+        const addButton = document.querySelector('#addButton');
+        addButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (form.noteText.value !== '') {
+            addNote();
+          }
+        });
+      </script>
+      
     
   </body>
 </html>
