@@ -106,18 +106,8 @@ class LoginView(TokenObtainPairView):
         # return render(request, 'login.html')
 
 def home(request):
-    user = request.user
-
-    if request.method == 'POST':
-        content = request.POST.get('content')
-        color = request.POST.get('formColorPicker')
-
-        if content and color:
-            note = Note(user=user, content=content, color=color)
-            note.save()
-
-    notes = Note.objects.filter(user=user)
-    return render(request, 'home.html', {'notes': notes})
+    
+    return render(request, 'home.html')
 
 
 
