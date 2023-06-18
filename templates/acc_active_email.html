@@ -1,0 +1,10 @@
+{% autoescape off %}  
+Salut {{ user.username }},  
+Veuillez cliquer sur le lien pour confirmer votre inscription,  
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}  
+
+Si vous avez des questions ou des préoccupations, veuillez nous contacter à support@example.com.
+
+Merci,
+L'équipe Jacques
+{% endautoescape %}
